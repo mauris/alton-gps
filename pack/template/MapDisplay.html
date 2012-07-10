@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Alton Live GPS Tracker - Map View</title>
+        <base href="{{rootUrl}}/" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="assets/styles/bootstrap.css" type="text/css" />
+        <script type="text/javascript" src="assets/scripts/jquery.min.js"></script>
+        <script type="text/javascript" src="assets/scripts/bootstrap.min.js"></script>
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100%;width:100%; overflow:hidden; }
+      #sidebar { 
+          background: #FFF;
+          border-radius: 0 0 0 5px;
+          height: 50px;
+          width:160px;
+          position: absolute; 
+          top:0px; 
+          right:0px;
+          z-index:999;
+          display:block;
+          padding:10px;
+      }
+      h1{
+          font-size: 14px;
+          font-weight: normal;
+          margin:0px 0px 10px;
+          padding:0px;
+          line-height: 1;
+      }
+    </style>
+    <script type="text/javascript"
+      src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0">
+    </script>
+    <script type="text/javascript">
+        
+        var map = null;
+        var PointController = {
+            path: [],
+            create: function(lat, lon){
+                var location = new Microsoft.Maps.Location(lat, lon);
+                var pushpin = new Microsoft.Maps.Pushpin(location, {
+                    icon: 'http://i.imgur.com/3QTDS.png',
+                    height: 16,
+                    width: 16
+                });
+                map.entities.push(pushpin);
+                this.path.push(pushpin);
+            },
+            clear: function(){
+                for(var i in this.path){
+                    map.entities.remove(this.path[i]);
+                }
+                this.path = [];
+            },
+            line: function(point1, point2){
+                var options = {strokeColor: new Microsoft.Maps.Color(255,255,255,180)}; 
+                var polyline = new Microsoft.Maps.Polyline([new Microsoft.Maps.Location(point1['latitude'], point1['longitude']), new Microsoft.Maps.Location(point2['latitude'], point2['longitude'])], options); 
+                map.entities.push(polyline);
+                this.path.push(polyline);
+            },
+            plot: function(path){
+                var lastPoint = null;
+                var distance = 0;
+                for(var i in path){
+                    var point = path[i];
+                    this.create(point['latitude'], point['longitude']);
+                    
+                    if(lastPoint != null){
+                        var options = {strokeColor: new Microsoft.Maps.Color(255,255,255,180)}; 
+                        var polyline = new Microsoft.Maps.Polyline([new Microsoft.Maps.Location(point['latitude'], point['longitude']), new Microsoft.Maps.Location(lastPoint['latitude'], lastPoint['longitude'])], options); 
+                        map.entities.push(polyline);
+                        this.path.push(polyline);
+                    }
+                    lastPoint = point;
+                    distance += parseInt(point['distance']);
+                }
+                $("#txtTotalDistance").html(distance);
+            }
+        }
+        
+        
+        function initialize() {
+            
+            var lastPoint = null;
+            var sessionId = '{{sessionId}}';
+            var center = [1.3337, 103.7767];
+            var pointsLoader = function(){
+                $.getJSON('{{rootUrl}}/poll', {lastPoint: lastPoint ? lastPoint['coordinateId'] : 0, sessionId: sessionId}, function(data){
+                    $(data).each(function(key, value){
+                        PointController.create(value['latitude'], value['longitude']);
+                        if(lastPoint != null){
+                            PointController.line(lastPoint, value);
+                        }
+                        if(lastPoint == null || parseInt(value['coordinateId']) > parseInt(lastPoint['coordinateId'])){
+                            lastPoint = value;
+                        }
+                    });
+                    window.setTimeout(pointsLoader, 2500);
+                });
+            }
+
+            map = new Microsoft.Maps.Map($('#map_canvas')[0],
+            {
+                credentials: '{{apiKey}}',
+                center: new Microsoft.Maps.Location(center[0], center[1]),
+                zoom: 18,
+                enableSearchLogo: false
+            });
+            map.setView({mapTypeId : Microsoft.Maps.MapTypeId.aerial});
+            map.entities.clear();
+            
+            /* {{#sessionId}} */
+            pointsLoader();
+            /* {{/sessionId}} */
+            
+        }
+        
+        
+        $(initialize);
+    </script>
+  </head>
+  <body>
+      <div id="sidebar">
+          <h1>Alton Live GPS Tracker</h1>
+          <a href="session/create" class="btn btn-inverse">New Session</a>
+          <a href="session/reset" class="btn btn-inverse">Reset</a>
+      </div>
+      <div id="map_canvas" oncontextmenu="return false;"></div>
+  </body>
+</html>
