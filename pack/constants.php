@@ -20,4 +20,4 @@ define('__PACKFIRE_PATH__', 'C:\\wamp\\www\\packfire\\packfire');
  * Set the application environment.
  * Determines what configuration files to be loaded. 
  */
-define('__ENVIRONMENT__' , '');
+define('__ENVIRONMENT__' , 'local');
