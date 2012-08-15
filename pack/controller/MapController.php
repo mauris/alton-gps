@@ -13,12 +13,7 @@ pload('packfire.response.pJsonResponse');
  */
 class MapController extends AppController {
     
-    function display(){
-        
-        $sessionId = $this->service('database')
-                ->from('sessions')->select('MAX(SessionId)')->fetch()->get(0);
-        $this->state['sessionId'] = $sessionId;
-        
+    function display(){        
         $this->render();
     }
     
@@ -26,7 +21,6 @@ class MapController extends AppController {
         session_write_close();
         
         $lastPoint = $this->params->get('lastPoint');
-        $sessionId = $this->params->get('sessionId');
         
         $result = array();
         $timeout = 2000;
@@ -35,16 +29,16 @@ class MapController extends AppController {
             
             $result = $this->service('database')
                 ->from('coordinates')
-                ->where('SessionId = :session AND CoordinateId > :lastPoint')
+                ->where('CoordinateId > :lastPoint')
                 ->orderBy('Updated')
-                ->param('session', $sessionId)
                 ->param('lastPoint', $lastPoint)
-                ->select('CoordinateId', 'Latitude', 'Longitude')
+                ->select('CoordinateId', 'Latitude', 'Longitude', 'DataSetId')
                 ->map(function($row){
                     return array(
                         'coordinateId' => $row[0],
                         'latitude' => $row[1],
-                        'longitude' => $row[2]
+                        'longitude' => $row[2],
+                        'dataset' => $row[3]
                     );
                 })
                 ->fetch()->toArray();

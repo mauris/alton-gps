@@ -15,7 +15,6 @@ class MapDisplayView extends AppView {
     protected function create(){
         $this->define('rootUrl', $this->service('config.app')->get('app', 'rootUrl'));
         $this->define('apiKey', $this->service('config.app')->get('app', 'mapApiKey'));
-        $this->define('sessionId', $this->state->get('sessionId'));
     }
     
 }

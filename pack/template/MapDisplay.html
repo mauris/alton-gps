@@ -85,10 +85,9 @@
         function initialize() {
             
             var lastPoint = null;
-            var sessionId = '{{sessionId}}';
             var center = [1.3337, 103.7767];
             var pointsLoader = function(){
-                $.getJSON('{{rootUrl}}/poll', {lastPoint: lastPoint ? lastPoint['coordinateId'] : 0, sessionId: sessionId}, function(data){
+                $.getJSON('{{rootUrl}}/poll', {lastPoint: lastPoint ? lastPoint['coordinateId'] : 0}, function(data){
                     $(data).each(function(key, value){
                         PointController.create(value['latitude'], value['longitude']);
                         if(lastPoint != null){
@@ -112,9 +111,7 @@
             map.setView({mapTypeId : Microsoft.Maps.MapTypeId.aerial});
             map.entities.clear();
             
-            /* {{#sessionId}} */
             pointsLoader();
-            /* {{/sessionId}} */
             
         }
         
@@ -125,8 +122,7 @@
   <body>
       <div id="sidebar">
           <h1>Alton Live GPS Tracker</h1>
-          <a href="session/create" class="btn btn-inverse">New Session</a>
-          <a href="session/reset" class="btn btn-inverse">Reset</a>
+          <a href="reset" class="btn btn-inverse">Reset</a>
       </div>
       <div id="map_canvas" oncontextmenu="return false;"></div>
   </body>

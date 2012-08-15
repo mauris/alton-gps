@@ -15,20 +15,20 @@ display:
   actual: "Map:display"
 
 poll:
-  rewrite: "/poll"
+  rewrite: "api/poll"
   method: "get"
   actual: "Map:polling"
   
 receive:
-  rewrite: "/receive"
+  rewrite: "/api/dataset/create"
+  actual: "Api:create"
+  
+receive:
+  rewrite: "/api/dataset/push"
   actual: "Api:receive"
   
-session.create:
-  rewrite: "/session/create"
-  actual: "Session:create"
-  
 session.reset:
-  rewrite: "/session/reset"
+  rewrite: "/reset"
   actual: "Session:reset"
 
 ...

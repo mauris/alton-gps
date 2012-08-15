@@ -13,20 +13,6 @@ pload('packfire.database.pDbExpression');
  */
 class SessionController extends AppController {
     
-    public function create(){
-        $this->render();
-    }
-    
-    public function postCreate(){
-        $note = $this->params->get('note');
-        $this->service('database')->table('sessions')
-                ->insert(array(
-                    'Note' => $note,
-                    'Created' => new pDbExpression('NOW()')
-                ));
-        $this->redirect($this->route('display'));
-    }
-    
     public function reset(){
         $this->render();
     }
