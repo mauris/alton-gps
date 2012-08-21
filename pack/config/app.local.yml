@@ -13,7 +13,7 @@
 
 app:
   rootUrl: "http://localhost/alton"
-  debug: false
+  debug: true
   
 routing:
   caching: false

@@ -14,16 +14,23 @@ display:
   method: "get"
   actual: "Map:display"
 
+pinGenerator:
+  rewrite: "/images/pin-{dataSet}.png"
+  method: "get"
+  actual: "Api:generateImage"
+  params:
+    dataSet: ([0-9]+)
+
 poll:
-  rewrite: "api/poll"
+  rewrite: "/api/poll"
   method: "get"
   actual: "Map:polling"
   
-receive:
+dataSetCreate:
   rewrite: "/api/dataset/create"
   actual: "Api:create"
   
-receive:
+dataSetPush:
   rewrite: "/api/dataset/push"
   actual: "Api:receive"
   

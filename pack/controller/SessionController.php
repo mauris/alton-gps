@@ -19,11 +19,10 @@ class SessionController extends AppController {
     
     public function postReset(){
         $this->service('database.driver')->query('DELETE FROM `coordinates`');
-        $this->service('database.driver')->query('DELETE FROM `sessions`');
+        $this->service('database.driver')->query('DELETE FROM `datasets`');
         $this->service('database.driver')->query('ALTER TABLE `coordinates` AUTO_INCREMENT = 1');
-        $this->service('database.driver')->query('ALTER TABLE `sessions` AUTO_INCREMENT = 1');
-        $this->params->add('note', 'Reset performed.');
-        $this->forward($this, 'create');
+        $this->service('database.driver')->query('ALTER TABLE `datasets` AUTO_INCREMENT = 1');
+        $this->redirect($this->route('display'));
     }
     
 }

@@ -39,10 +39,10 @@
         var map = null;
         var PointController = {
             path: [],
-            create: function(lat, lon){
+            create: function(lat, lon, dataSetId){
                 var location = new Microsoft.Maps.Location(lat, lon);
                 var pushpin = new Microsoft.Maps.Pushpin(location, {
-                    icon: 'http://i.imgur.com/3QTDS.png',
+                    icon: 'images/pin-' + dataSetId + '.png',
                     height: 16,
                     width: 16
                 });
@@ -87,9 +87,9 @@
             var lastPoint = null;
             var center = [1.3337, 103.7767];
             var pointsLoader = function(){
-                $.getJSON('{{rootUrl}}/poll', {lastPoint: lastPoint ? lastPoint['coordinateId'] : 0}, function(data){
+                $.getJSON('{{rootUrl}}/api/poll', {lastPoint: lastPoint ? lastPoint['coordinateId'] : 0}, function(data){
                     $(data).each(function(key, value){
-                        PointController.create(value['latitude'], value['longitude']);
+                        PointController.create(value['latitude'], value['longitude'], value['dataset']);
                         if(lastPoint != null){
                             PointController.line(lastPoint, value);
                         }

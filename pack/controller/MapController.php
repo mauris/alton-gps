@@ -1,6 +1,7 @@
 <?php
 pload('app.AppController');
 pload('packfire.response.pJsonResponse');
+pload('view.MapDisplayView');
 
 /**
  * MapController
@@ -14,7 +15,7 @@ pload('packfire.response.pJsonResponse');
 class MapController extends AppController {
     
     function display(){        
-        $this->render();
+        $this->render(new MapDisplayView());
     }
     
     function polling(){
