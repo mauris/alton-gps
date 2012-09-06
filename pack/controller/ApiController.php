@@ -32,15 +32,15 @@ class ApiController extends AppController {
     }
     
     private static function randomColor($id){
-        $rawR = mt_rand(0, 5) * 51;
-        $rawG = mt_rand(0, 5) * 51;
-        $rawB = mt_rand(0, 5) * 51;
-        
-        $mix = ceil(($id % 5) / 5 * 255);
-        $r = ceil(($rawR + $mix) / 2);
-        $g = ceil(($rawG + $mix) / 2);
-        $b = ceil(($rawB + $mix) / 2);
-        return str_pad(dechex($r << 16 + $g << 8 + $b), 6, '0', STR_PAD_LEFT);
+            $rawR = mt_rand(0, 10) * 25.5;
+            $rawG = mt_rand(0, 10) * 25.5;
+            $rawB = mt_rand(0, 10) * 25.5;
+
+            $mix = ceil(($id % 5) / 5 * 255);
+            $r = ceil(($rawR + $mix) % 255);
+            $g = ceil(($rawG + $mix) % 255);
+            $b = ceil(($rawB + $mix) % 255);
+            return str_pad(dechex(($r << 16) | ($g << 8) | $b), 6, '0', STR_PAD_LEFT);
     }
     
     function create(){
