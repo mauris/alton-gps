@@ -62,19 +62,19 @@
                 this.path.push(polyline);
             },
             plot: function(path){
-                var lastPoint = null;
+                //var lastPoint = null;
                 var distance = 0;
                 for(var i in path){
                     var point = path[i];
                     this.create(point['latitude'], point['longitude']);
                     
-                    if(lastPoint != null){
-                        var options = {strokeColor: new Microsoft.Maps.Color(255,255,255,180)}; 
-                        var polyline = new Microsoft.Maps.Polyline([new Microsoft.Maps.Location(point['latitude'], point['longitude']), new Microsoft.Maps.Location(lastPoint['latitude'], lastPoint['longitude'])], options); 
-                        map.entities.push(polyline);
-                        this.path.push(polyline);
-                    }
-                    lastPoint = point;
+                    //if(lastPoint != null){
+                    //    var options = {strokeColor: new Microsoft.Maps.Color(255,255,255,180)}; 
+                        //var polyline = new Microsoft.Maps.Polyline([new Microsoft.Maps.Location(point['latitude'], point['longitude']), new Microsoft.Maps.Location(lastPoint['latitude'], lastPoint['longitude'])], options); 
+                        //map.entities.push(polyline);
+                        //this.path.push(polyline);
+                    //}
+                    //lastPoint = point;
                     distance += parseInt(point['distance']);
                 }
                 $("#txtTotalDistance").html(distance);
