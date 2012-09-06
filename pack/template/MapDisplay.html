@@ -90,9 +90,9 @@
                 $.getJSON('{{rootUrl}}/api/poll', {lastPoint: lastPoint ? lastPoint['coordinateId'] : 0}, function(data){
                     $(data).each(function(key, value){
                         PointController.create(value['latitude'], value['longitude'], value['dataset']);
-                        if(lastPoint != null){
-                            PointController.line(lastPoint, value);
-                        }
+                        //if(lastPoint != null){
+                        //    PointController.line(lastPoint, value);
+                        //}
                         if(lastPoint == null || parseInt(value['coordinateId']) > parseInt(lastPoint['coordinateId'])){
                             lastPoint = value;
                         }
