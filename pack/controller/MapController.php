@@ -50,7 +50,7 @@ class MapController extends AppController {
             }
         }
         
-        $this->response = new pJsonResponse($result);
+        return new pJsonResponse($result);
     }
     
 }

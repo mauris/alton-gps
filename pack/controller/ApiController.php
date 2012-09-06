@@ -28,7 +28,7 @@ class ApiController extends AppController {
                     'Updated' => new pDbExpression('NOW()'),
                     'DataSetId' => $dataSet
                 ));
-        $this->response = new pJsonResponse(array());
+        return new pJsonResponse(array());
     }
     
     private static function randomColor($id){
