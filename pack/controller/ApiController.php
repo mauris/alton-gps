@@ -16,10 +16,8 @@ pload('packfire.response.pJsonResponse');
  */
 class ApiController extends AppController {
     
-    function receive(){
-        $latitude = $this->params->get('latitude');
-        $longitude = $this->params->get('longitude');
-        $dataSet = base_convert($this->params->get('set'), 36, 10);
+    function receive($latitude, $longitude, $dataSet){
+        $dataSet = base_convert($dataSet, 36, 10);
         
         $this->service('database')->table('coordinates')
                 ->insert(array(
@@ -57,8 +55,7 @@ class ApiController extends AppController {
         exit;
     }
     
-    function generateImage(){
-        $id = $this->params->get('dataSet');
+    function generateImage($id){
         $color = $this->service('database')->from('datasets')
                 ->select('Color')->where('DataSetId = :id')
                 ->map(function($x){return $x[0];})

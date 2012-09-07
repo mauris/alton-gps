@@ -25,6 +25,8 @@ poll:
   rewrite: "/api/poll"
   method: "get"
   actual: "Map:polling"
+  params:
+    lastPoint: ([0-9]+)
   
 dataSetCreate:
   rewrite: "/api/dataset/create"
@@ -33,6 +35,10 @@ dataSetCreate:
 dataSetPush:
   rewrite: "/api/dataset/push"
   actual: "Api:receive"
+  params:
+    latitude: (.*)
+    longitude: (.*)
+    dataSet: ([a-z0-9A-Z]+)
   
 session.reset:
   rewrite: "/reset"

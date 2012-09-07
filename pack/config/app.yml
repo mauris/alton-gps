@@ -14,7 +14,7 @@ app:
   version: "1.0"
   rootUrl: "http://localhost/alton"
   debug: false
-  mapApiKey: # your own key required
+  mapApiKey: null # your own key required
 
 security:
   disabled: false

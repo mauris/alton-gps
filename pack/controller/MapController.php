@@ -18,10 +18,8 @@ class MapController extends AppController {
         $this->render(new MapDisplayView());
     }
     
-    function polling(){
+    function polling($lastPoint){
         session_write_close();
-        
-        $lastPoint = $this->params->get('lastPoint');
         
         $result = array();
         $timeout = 2000;
