@@ -30,7 +30,7 @@ session:
 
 routing:
   enabled: true
-  caching: true
+  caching: false
 
 database:
 #  default: 

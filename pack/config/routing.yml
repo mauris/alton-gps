@@ -19,14 +19,14 @@ pinGenerator:
   method: "get"
   actual: "Api:generateImage"
   params:
-    dataSet: ([0-9]+)
+    dataSet: int
 
 poll:
   rewrite: "/api/poll"
   method: "get"
   actual: "Map:polling"
   params:
-    lastPoint: ([0-9]+)
+    lastPoint: int
   
 dataSetCreate:
   rewrite: "/api/dataset/create"
@@ -36,9 +36,9 @@ dataSetPush:
   rewrite: "/api/dataset/push"
   actual: "Api:receive"
   params:
-    latitude: (.*)
-    longitude: (.*)
-    dataSet: ([a-z0-9A-Z]+)
+    latitude: double
+    longitude: double
+    dataSet: alnum
   
 session.reset:
   rewrite: "/reset"
