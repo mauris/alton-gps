@@ -27,10 +27,17 @@ poll:
   actual: "Map:polling"
   params:
     lastPoint: int
+    
+legend:
+  rewrite: "/api/legend"
+  method: "get"
+  actual: "Map:legend"
   
 dataSetCreate:
   rewrite: "/api/dataset/create"
   actual: "Api:create"
+  params:
+    title: any
   
 dataSetPush:
   rewrite: "/api/dataset/push"
@@ -38,7 +45,7 @@ dataSetPush:
   params:
     latitude: double
     longitude: double
-    dataSet: alnum
+    set: alnum
   
 session.reset:
   rewrite: "/reset"

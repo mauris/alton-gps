@@ -18,14 +18,39 @@ class MapController extends AppController {
         $this->render(new MapDisplayView());
     }
     
+    function legend(){
+        $result = $this->service('database')
+            ->from('datasets')
+            ->select('DataSetId', 'Title')
+            ->map(function($row){
+                return array(
+                    'id' => $row[0],
+                    'title' => $row[1]
+                );
+            })
+            ->fetch()->toArray();
+        return new pJsonResponse($result);
+    }
+    
     function polling($lastPoint){
         session_write_close();
         
+        $autoIncrement = $lastPoint;
+        $timeout = 3000;
+        $checkInterval = 200;
+        while($timeout > 0 && $lastPoint == $autoIncrement){
+            /* @var $driver pMySqlConnector */
+            $autoIncrement = $this->service('database.driver')
+                    ->query('SHOW TABLE STATUS LIKE \'coordinates\'')
+                    ->fetchColumn(10) - 1;
+            if($lastPoint == $autoIncrement){
+                usleep($checkInterval * 1000);
+                $timeout -= $checkInterval;
+            }
+        }
+        
         $result = array();
-        $timeout = 2000;
-        $checkInterval = 500;
-        while($timeout > 0 && empty($result)){
-            
+        if($lastPoint < $autoIncrement){
             $result = $this->service('database')
                 ->from('coordinates')
                 ->where('CoordinateId > :lastPoint')
@@ -41,13 +66,9 @@ class MapController extends AppController {
                     );
                 })
                 ->fetch()->toArray();
-            
-            if(empty($result)){
-                usleep($checkInterval * 1000);
-                $timeout -= $checkInterval;
-            }
+        }elseif($lastPoint > $autoIncrement){
+            $result['status'] = 'reset';
         }
-        
         return new pJsonResponse($result);
     }
     

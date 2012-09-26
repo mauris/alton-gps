@@ -41,12 +41,13 @@ class ApiController extends AppController {
             return str_pad(dechex(($r << 16) | ($g << 8) | $b), 6, '0', STR_PAD_LEFT);
     }
     
-    function create(){
+    function create($title){
         $maxId = $this->service('database')->from('datasets')
                 ->select('MAX(DataSetId)')
                 ->fetch()->get(0);
         $this->service('database')->table('datasets')
                 ->insert(array(
+                    'Title' => $title,
                     'Created' => new pDbExpression('NOW()'),
                     'Color' => self::randomColor($maxId)
                 ));

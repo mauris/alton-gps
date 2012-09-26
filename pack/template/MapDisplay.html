@@ -23,6 +23,19 @@
           display:block;
           padding:10px;
       }
+      #legend { 
+          position:absolute;
+          bottom: 20px;
+          border-radius:3px;
+          left: 20px;
+          padding:5px;
+          background:#FFF;
+          z-index:999;
+          background:rgba(255,255,255,0.6);
+      }
+      #legend>div{
+          padding: 2px;
+      }
       h1{
           font-size: 14px;
           font-weight: normal;
@@ -83,21 +96,38 @@
         
         
         function initialize() {
-            
             var lastPoint = null;
             var center = [1.3337, 103.7767];
             var pointsLoader = function(){
                 $.getJSON('{{rootUrl}}/api/poll', {lastPoint: lastPoint ? lastPoint['coordinateId'] : 0}, function(data){
-                    $(data).each(function(key, value){
-                        PointController.create(value['latitude'], value['longitude'], value['dataset']);
-                        //if(lastPoint != null){
-                        //    PointController.line(lastPoint, value);
-                        //}
-                        if(lastPoint == null || parseInt(value['coordinateId']) > parseInt(lastPoint['coordinateId'])){
-                            lastPoint = value;
+                    if(data.status == 'reset'){
+                        alert('Alton has been reset by another user.');
+                        PointController.clear();
+                        lastPoint = null;
+                        $("#legend").html('');
+                    }else{
+                        var count = 0;
+                        $(data).each(function(key, value){
+                            ++count;
+                            PointController.create(value['latitude'], value['longitude'], value['dataset']);
+                            //if(lastPoint != null){
+                            //    PointController.line(lastPoint, value);
+                            //}
+                            if(lastPoint == null || parseInt(value['coordinateId']) > parseInt(lastPoint['coordinateId'])){
+                                lastPoint = value;
+                            }
+                        });
+                        if(count > 0){
+                            // update legend
+                            $("#legend").html('');
+                            $.getJSON('{{rootUrl}}/api/legend', function(legend){
+                                $.each(legend, function(index, row){
+                                    $("#legend").append('<div><img src="images/pin-' + row.id + '.png" alt="" /> <span>' + row.title + '</span></div>');
+                                });
+                            });
                         }
-                    });
-                    window.setTimeout(pointsLoader, 2500);
+                    }
+                    window.setTimeout(pointsLoader, 1000);
                 });
             }
 
@@ -123,6 +153,9 @@
       <div id="sidebar">
           <h1>Alton Live GPS Tracker</h1>
           <a href="reset" class="btn btn-inverse">Reset</a>
+      </div>
+      <div id="legend">
+          
       </div>
       <div id="map_canvas" oncontextmenu="return false;"></div>
   </body>
