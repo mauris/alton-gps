@@ -15,11 +15,11 @@ display:
   actual: "Map:display"
 
 pinGenerator:
-  rewrite: "/images/pin-{dataSet}.png"
+  rewrite: "/images/pin-{id}.png"
   method: "get"
   actual: "Api:generateImage"
   params:
-    dataSet: int
+    id: int
 
 poll:
   rewrite: "/api/poll"

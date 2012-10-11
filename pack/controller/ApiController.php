@@ -16,15 +16,15 @@ pload('packfire.response.pJsonResponse');
  */
 class ApiController extends AppController {
     
-    function receive($latitude, $longitude, $dataSet){
-        $dataSet = base_convert($dataSet, 36, 10);
+    function receive($latitude, $longitude, $set){
+        $set = base_convert($set, 36, 10);
         
         $this->service('database')->table('coordinates')
                 ->insert(array(
                     'Latitude' => $latitude,
                     'Longitude' => $longitude,
                     'Updated' => new pDbExpression('NOW()'),
-                    'DataSetId' => $dataSet
+                    'DataSetId' => $set
                 ));
         return new pJsonResponse(array());
     }
