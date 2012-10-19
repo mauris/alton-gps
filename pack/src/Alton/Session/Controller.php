@@ -1,6 +1,7 @@
 <?php
-pload('app.AppController');
-pload('packfire.database.pDbExpression');
+namespace Alton\Session;
+
+use Packfire\Application\Pack\Controller as CoreController;
 
 /**
  * SessionController
@@ -11,7 +12,7 @@ pload('packfire.database.pDbExpression');
  * @package app.controler
  * @since version-created
  */
-class SessionController extends AppController {
+class Controller extends CoreController {
     
     public function reset(){
         $this->render();

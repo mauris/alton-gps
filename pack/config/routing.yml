@@ -12,36 +12,36 @@
 display:
   rewrite: "/"
   method: "get"
-  actual: "Map:display"
+  actual: "Alton\Map\Controller:display"
 
 pinGenerator:
   rewrite: "/images/pin-{id}.png"
   method: "get"
-  actual: "Api:generateImage"
+  actual: "Alton\Api\Controller:generateImage"
   params:
     id: int
 
 poll:
   rewrite: "/api/poll"
   method: "get"
-  actual: "Map:polling"
+  actual: "Alton\Map\Controller:polling"
   params:
     lastPoint: int
     
 legend:
   rewrite: "/api/legend"
   method: "get"
-  actual: "Map:legend"
+  actual: "Alton\Map\Controller:legend"
   
 dataSetCreate:
   rewrite: "/api/dataset/create"
-  actual: "Api:create"
+  actual: "Alton\Api\Controller:create"
   params:
     title: any
   
 dataSetPush:
   rewrite: "/api/dataset/push"
-  actual: "Api:receive"
+  actual: "Alton\Api\Controller:receive"
   params:
     latitude: double
     longitude: double
@@ -49,6 +49,6 @@ dataSetPush:
   
 session.reset:
   rewrite: "/reset"
-  actual: "Session:reset"
+  actual: "Alton\Session\Controller:reset"
 
 ...

@@ -1,7 +1,8 @@
 <?php
-pload('app.AppController');
-pload('packfire.response.pJsonResponse');
-pload('view.MapDisplayView');
+namespace Alton\Map;
+
+use Packfire\Application\Pack\Controller as CoreController;
+use Packfire\Response\JsonResponse;
 
 /**
  * MapController
@@ -12,10 +13,10 @@ pload('view.MapDisplayView');
  * @package app.controler
  * @since version-created
  */
-class MapController extends AppController {
+class Controller extends CoreController {
     
     function display(){        
-        $this->render(new MapDisplayView());
+        $this->render();
     }
     
     function legend(){
@@ -29,7 +30,7 @@ class MapController extends AppController {
                 );
             })
             ->fetch()->toArray();
-        return new pJsonResponse($result);
+        return new JsonResponse($result);
     }
     
     function polling($lastPoint){
@@ -39,7 +40,7 @@ class MapController extends AppController {
         $timeout = 3000;
         $checkInterval = 200;
         while($timeout > 0 && $lastPoint == $autoIncrement){
-            /* @var $driver pMySqlConnector */
+            /* @var $driver Packfire\Database\Drivers\MySql\Connector */
             $autoIncrement = $this->service('database.driver')
                     ->query('SHOW TABLE STATUS LIKE \'coordinates\'')
                     ->fetchColumn(10) - 1;
@@ -69,7 +70,7 @@ class MapController extends AppController {
         }elseif($lastPoint > $autoIncrement){
             $result['status'] = 'reset';
         }
-        return new pJsonResponse($result);
+        return new JsonResponse($result);
     }
     
 }

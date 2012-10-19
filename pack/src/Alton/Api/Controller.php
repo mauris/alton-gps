@@ -1,7 +1,9 @@
 <?php
-pload('app.AppController');
-pload('packfire.database.pDbExpression');
-pload('packfire.response.pJsonResponse');
+namespace Alton\Api;
+
+use Packfire\Application\Pack\Controller as CoreController;
+use Packfire\Database\Expression;
+use Packfire\Response\JsonResponse;
 
 /**
  * ApiController class
@@ -14,7 +16,7 @@ pload('packfire.response.pJsonResponse');
  * @package app.controller
  * @since 1.0-sofia
  */
-class ApiController extends AppController {
+class Controller extends CoreController {
     
     function receive($latitude, $longitude, $set){
         $set = base_convert($set, 36, 10);
@@ -23,10 +25,10 @@ class ApiController extends AppController {
                 ->insert(array(
                     'Latitude' => $latitude,
                     'Longitude' => $longitude,
-                    'Updated' => new pDbExpression('NOW()'),
+                    'Updated' => new Expression('NOW()'),
                     'DataSetId' => $set
                 ));
-        return new pJsonResponse(array());
+        return new JsonResponse(array());
     }
     
     private static function randomColor($id){
@@ -48,7 +50,7 @@ class ApiController extends AppController {
         $this->service('database')->table('datasets')
                 ->insert(array(
                     'Title' => $title,
-                    'Created' => new pDbExpression('NOW()'),
+                    'Created' => new Expression('NOW()'),
                     'Color' => self::randomColor($maxId)
                 ));
         echo base_convert($this->service('database.driver')
