@@ -27,18 +27,18 @@ poll:
   actual: "Alton\Map\Controller:polling"
   params:
     lastPoint: int
-    
+
 legend:
   rewrite: "/api/legend"
   method: "get"
   actual: "Alton\Map\Controller:legend"
-  
+
 dataSetCreate:
   rewrite: "/api/dataset/create"
   actual: "Alton\Api\Controller:create"
   params:
     title: any
-  
+
 dataSetPush:
   rewrite: "/api/dataset/push"
   actual: "Alton\Api\Controller:receive"
@@ -46,7 +46,7 @@ dataSetPush:
     latitude: double
     longitude: double
     set: alnum
-  
+
 session.reset:
   rewrite: "/reset"
   actual: "Alton\Session\Controller:reset"

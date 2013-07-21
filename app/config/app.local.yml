@@ -12,12 +12,12 @@
 ---
 
 app:
-  rootUrl: "http://localhost/alton"
+  rootUrl: "http://alton/dev"
   debug: true
-  
+
 routing:
   caching: false
-  
+
 database:
   default: 
     driver: mysql
