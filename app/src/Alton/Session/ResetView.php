@@ -15,7 +15,7 @@ use Packfire\Application\Pack\View;
 class ResetView extends View {
     
     protected function create(){
-        $this->define('rootUrl', $this->service('config.app')->get('app', 'rootUrl'));
+        $this->define('rootUrl', $this->ioc['config.app']->get('app', 'rootUrl'));
     }
     
 }

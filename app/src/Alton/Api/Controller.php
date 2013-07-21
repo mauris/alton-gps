@@ -21,7 +21,7 @@ class Controller extends CoreController {
     function receive($latitude, $longitude, $set){
         $set = base_convert($set, 36, 10);
         
-        $this->service('database')->table('coordinates')
+        $this->ioc['database']->table('coordinates')
                 ->insert(array(
                     'Latitude' => $latitude,
                     'Longitude' => $longitude,
@@ -44,22 +44,22 @@ class Controller extends CoreController {
     }
     
     function create($title){
-        $maxId = $this->service('database')->from('datasets')
+        $maxId = $this->ioc['database']->from('datasets')
                 ->select('MAX(DataSetId)')
                 ->fetch()->get(0);
-        $this->service('database')->table('datasets')
+        $this->ioc['database']->table('datasets')
                 ->insert(array(
                     'Title' => $title,
                     'Created' => new Expression('NOW()'),
                     'Color' => self::randomColor($maxId)
                 ));
-        echo base_convert($this->service('database.driver')
+        echo base_convert($this->ioc['database.driver']
                     ->lastInsertId(), 10, 36);
         exit;
     }
     
     function generateImage($id){
-        $color = $this->service('database')->from('datasets')
+        $color = $this->ioc['database']->from('datasets')
                 ->select('Color')->where('DataSetId = :id')
                 ->map(function($x){return $x[0];})
                 ->param('id', $id)->fetch()->get(0);

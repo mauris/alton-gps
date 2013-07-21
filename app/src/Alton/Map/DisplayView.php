@@ -15,8 +15,8 @@ use Packfire\Application\Pack\View;
 class DisplayView extends View {
     
     protected function create(){
-        $this->define('rootUrl', $this->service('config.app')->get('app', 'rootUrl'));
-        $this->define('apiKey', $this->service('config.app')->get('app', 'mapApiKey'));
+        $this->define('rootUrl', $this->ioc['config.app']->get('app', 'rootUrl'));
+        $this->define('apiKey', $this->ioc['config.app']->get('app', 'mapApiKey'));
     }
     
 }

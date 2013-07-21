@@ -19,10 +19,10 @@ class Controller extends CoreController {
     }
     
     public function postReset(){
-        $this->service('database.driver')->query('DELETE FROM `coordinates`');
-        $this->service('database.driver')->query('DELETE FROM `datasets`');
-        $this->service('database.driver')->query('ALTER TABLE `coordinates` AUTO_INCREMENT = 1');
-        $this->service('database.driver')->query('ALTER TABLE `datasets` AUTO_INCREMENT = 1');
+        $this->ioc['database.driver']->query('DELETE FROM `coordinates`');
+        $this->ioc['database.driver']->query('DELETE FROM `datasets`');
+        $this->ioc['database.driver']->query('ALTER TABLE `coordinates` AUTO_INCREMENT = 1');
+        $this->ioc['database.driver']->query('ALTER TABLE `datasets` AUTO_INCREMENT = 1');
         $this->redirect($this->route('display'));
     }
     

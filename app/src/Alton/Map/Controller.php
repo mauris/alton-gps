@@ -20,7 +20,7 @@ class Controller extends CoreController {
     }
     
     function legend(){
-        $result = $this->service('database')
+        $result = $this->ioc['database']
             ->from('datasets')
             ->select('DataSetId', 'Title')
             ->map(function($row){
@@ -41,7 +41,7 @@ class Controller extends CoreController {
         $checkInterval = 200;
         while($timeout > 0 && $lastPoint == $autoIncrement){
             /* @var $driver Packfire\Database\Drivers\MySql\Connector */
-            $autoIncrement = $this->service('database.driver')
+            $autoIncrement = $this->ioc['database.driver']
                     ->query('SHOW TABLE STATUS LIKE \'coordinates\'')
                     ->fetchColumn(10) - 1;
             if($lastPoint == $autoIncrement){
@@ -52,7 +52,7 @@ class Controller extends CoreController {
         
         $result = array();
         if($lastPoint < $autoIncrement){
-            $result = $this->service('database')
+            $result = $this->ioc['database']
                 ->from('coordinates')
                 ->where('CoordinateId > :lastPoint')
                 ->orderBy('Updated')
