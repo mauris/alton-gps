@@ -12,11 +12,11 @@ use Packfire\Application\Pack\View;
  * @package app.view
  * @since 1.0
  */
-class DisplayView extends View {
-    
-    protected function create(){
+class DisplayView extends View
+{
+    protected function create()
+    {
         $this->define('rootUrl', $this->ioc['config.app']->get('app', 'rootUrl'));
         $this->define('apiKey', $this->ioc['config.app']->get('app', 'mapApiKey'));
     }
-    
 }

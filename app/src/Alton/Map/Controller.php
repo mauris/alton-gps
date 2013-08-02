@@ -13,27 +13,33 @@ use Packfire\Response\JsonResponse;
  * @package app.controler
  * @since version-created
  */
-class Controller extends CoreController {
-    
-    function display(){        
+class Controller extends CoreController
+{
+    function display()
+    {        
         $this->render();
     }
     
-    function legend(){
+    function legend()
+    {
         $result = $this->ioc['database']
             ->from('datasets')
             ->select('DataSetId', 'Title')
-            ->map(function($row){
-                return array(
-                    'id' => $row[0],
-                    'title' => $row[1]
-                );
-            })
-            ->fetch()->toArray();
+            ->map(
+                function($row){
+                    return array(
+                        'id' => $row[0],
+                        'title' => $row[1]
+                    );
+                }
+            )
+            ->fetch()
+            ->toArray();
         return new JsonResponse($result);
     }
     
-    function polling($lastPoint){
+    function polling($lastPoint)
+    {
         session_write_close();
         
         $autoIncrement = $lastPoint;
@@ -51,26 +57,28 @@ class Controller extends CoreController {
         }
         
         $result = array();
-        if($lastPoint < $autoIncrement){
+        if ($lastPoint < $autoIncrement) {
             $result = $this->ioc['database']
                 ->from('coordinates')
                 ->where('CoordinateId > :lastPoint')
                 ->orderBy('Updated')
                 ->param('lastPoint', $lastPoint)
                 ->select('CoordinateId', 'Latitude', 'Longitude', 'DataSetId')
-                ->map(function($row){
-                    return array(
-                        'coordinateId' => $row[0],
-                        'latitude' => $row[1],
-                        'longitude' => $row[2],
-                        'dataset' => $row[3]
-                    );
-                })
-                ->fetch()->toArray();
-        }elseif($lastPoint > $autoIncrement){
+                ->map(
+                    function($row){
+                        return array(
+                            'coordinateId' => $row[0],
+                            'latitude' => $row[1],
+                            'longitude' => $row[2],
+                            'dataset' => $row[3]
+                        );
+                    }
+                )
+                ->fetch()
+                ->toArray();
+        } elseif($lastPoint > $autoIncrement) {
             $result['status'] = 'reset';
         }
         return new JsonResponse($result);
     }
-    
 }

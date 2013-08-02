@@ -12,10 +12,10 @@ use Packfire\Application\Pack\View;
  * @package app.view
  * @since 1.0
  */
-class ResetView extends View {
-    
-    protected function create(){
+class ResetView extends View
+{
+    protected function create()
+    {
         $this->define('rootUrl', $this->ioc['config.app']->get('app', 'rootUrl'));
     }
-    
 }
