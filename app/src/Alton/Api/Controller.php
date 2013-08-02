@@ -16,9 +16,10 @@ use Packfire\Response\JsonResponse;
  * @package app.controller
  * @since 1.0-sofia
  */
-class Controller extends CoreController {
-    
-    function receive($latitude, $longitude, $set){
+class Controller extends CoreController
+{
+    function receive($latitude, $longitude, $set)
+    {
         $set = base_convert($set, 36, 10);
         
         $this->ioc['database']->table('coordinates')
@@ -31,7 +32,8 @@ class Controller extends CoreController {
         return new JsonResponse(array());
     }
     
-    private static function randomColor($id){
+    private static function randomColor($id)
+    {
             $rawR = mt_rand(0, 10) * 25.5;
             $rawG = mt_rand(0, 10) * 25.5;
             $rawB = mt_rand(0, 10) * 25.5;
@@ -43,7 +45,8 @@ class Controller extends CoreController {
             return str_pad(dechex(($r << 16) | ($g << 8) | $b), 6, '0', STR_PAD_LEFT);
     }
     
-    function create($title){
+    function create($title)
+    {
         $maxId = $this->ioc['database']->from('datasets')
                 ->select('MAX(DataSetId)')
                 ->fetch()->get(0);
@@ -58,14 +61,15 @@ class Controller extends CoreController {
         exit;
     }
     
-    function generateImage($id){
+    function generateImage($id)
+    {
         $color = $this->ioc['database']->from('datasets')
                 ->select('Color')->where('DataSetId = :id')
                 ->map(function($x){return $x[0];})
                 ->param('id', $id)->fetch()->get(0);
-        if($color){
+        if ($color) {
             $color = hexdec($color);
-        }else{
+        } else {
             $color = 0;
         }
         $red = ($color >> 16) & 0xFF;
@@ -82,5 +86,4 @@ class Controller extends CoreController {
         imagepng($img);
         exit;
     }
-    
 }
